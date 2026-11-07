@@ -1,0 +1,27 @@
+services:
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs
+    restart: unless-stopped
+    command: /data
+    environment:
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY:?Set RUSTFS_ACCESS_KEY in rustfs/.env}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY:?Set RUSTFS_SECRET_KEY in rustfs/.env}
+      RUSTFS_ADDRESS: ":9000"
+      RUSTFS_CONSOLE_ADDRESS: ":9001"
+      RUSTFS_CONSOLE_ENABLE: "true"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - rustfs_data:/data
+    networks:
+      - data_platform
+
+volumes:
+  rustfs_data:
+
+networks:
+  data_platform:
+    external: true
+    name: data-platform-network
